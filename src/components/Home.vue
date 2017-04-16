@@ -2,9 +2,7 @@
   <el-row>
     <el-col :offset="5" :span="14" class="repositories-list">
 
-      <el-input v-model="search" placeholder="Search for a repository" autofocus>
-        <el-button slot="append" icon="search"></el-button>
-      </el-input>
+      <input v-model="search" class="search-box" @keyup.enter="openFirstRepository" placeholder="Search for a repository" autofocus>
 
       <div class="divider"></div>
 
@@ -55,6 +53,12 @@
     },
 
     methods: {
+      openFirstRepository() {
+        let repository = this.filteredRepos[0]
+        window.open(repository.html_url)
+        this.search = ''
+      },
+
       fromNow(time) {
         return Moment(time).fromNow()
       },
@@ -91,6 +95,19 @@
     width:            100%;
     height:           1px;
     background-color: #eaeaea;
+  }
+
+  .repositories-list .search-box {
+    width: calc(100% - 1.6rem - 2px);
+    padding: 0.7rem 0.8rem;
+    font-size: 0.8rem;
+    border-radius: 5px;
+    border: 1px solid #c0c9ce;
+
+    &:focus {
+      outline: none;
+      border: 1px solid #20a0ff;
+    }
   }
 
   .repositories-list .item {
