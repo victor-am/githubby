@@ -4,13 +4,28 @@
       <i class="fa fa-github-alt"></i>
       Githubby
     </h1>
+
+    <input v-model="githubToken"/> <button @click="saveToken">Save</button>
+
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+
+  data() {
+    return {
+      githubToken: localStorage.getItem('github_token')
+    }
+  },
+
+  methods: {
+    saveToken() {
+      localStorage.setItem('github_token', this.githubToken)
+    }
+  }
 }
 </script>
 

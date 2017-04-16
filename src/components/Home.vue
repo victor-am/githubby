@@ -19,7 +19,7 @@
               </a>
             </div>
 
-            Last updated at {{ repositoryLastUpdate(repository) }}
+            Last push {{ fromNow(repository.pushed_at) }}
           </el-card>
         </el-col>
       </el-row>
@@ -44,7 +44,7 @@
 
     computed: {
       sortedRepos() {
-        return this.orderBy(this.repositories, 'updated_at', -1)
+        return this.orderBy(this.repositories, 'pushed_at', -1)
       },
 
       filteredRepos() {
@@ -53,14 +53,18 @@
     },
 
     methods: {
-      repositoryLastUpdate(repository) {
-        return Moment(repository.updated_at).fromNow()
+      fromNow(time) {
+        return Moment(time).fromNow()
       }
     },
 
     mounted() {
-      let gh = new Github({ token: '4ef964527ceb500a3f7dffd00322e9d7ce977712' })
-      gh.getUser().listRepos().then((response) => { this.repositories = response.data })
+      let token = localStorage.getItem('github_token')
+
+      if (token) {
+        let gh = new Github({ token })
+        gh.getUser().listRepos().then((response) => { this.repositories = response.data })
+      }
     }
   }
 </script>
