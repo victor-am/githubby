@@ -78,11 +78,9 @@
     overflow:      hidden;
     border:        2px solid #c5c5c5;
     border-radius: 100rem;
-    position:      absolute;
-    left:          50%;
-    top:           10px;
-    margin-left:   -20px;
+    position:      relative;
     cursor:        pointer;
+    margin-top:    7px;
 
     img {
       width: 100%;
