@@ -14,7 +14,7 @@
     "moment": "^2.18.1",
     "node-sass": "^4.5.2",
     "sass-loader": "^6.0.3",
-    "vue": "^2.2.2",
+    "vue": "^2.2.6",
     "vue-router": "^2.2.0",
     "vue2-filters": "^0.1.7"
   },
