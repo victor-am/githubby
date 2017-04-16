@@ -19,7 +19,8 @@
               </a>
             </div>
 
-            Last push {{ fromNow(repository.pushed_at) }}
+            <p>Notifications: {{ notificationsFrom(repository).length }}</p>
+            <p>Last push {{ fromNow(repository.pushed_at) }}</p>
           </el-card>
         </el-col>
       </el-row>
@@ -37,8 +38,9 @@
 
     data () {
       return {
-        repositories: [],
-        search:       ''
+        repositories:  [],
+        notifications: [],
+        search:        ''
       }
     },
 
@@ -55,6 +57,12 @@
     methods: {
       fromNow(time) {
         return Moment(time).fromNow()
+      },
+
+      notificationsFrom(repository) {
+        return this.notifications.filter((n) => {
+          return n.repository.id === repository.id
+        })
       }
     },
 
@@ -62,8 +70,16 @@
       let token = localStorage.getItem('github_token')
 
       if (token) {
-        let gh = new Github({ token })
-        gh.getUser().listRepos().then((response) => { this.repositories = response.data })
+        let gh   = new Github({ token })
+        let user = gh.getUser()
+
+        user.listRepos().then((response) => {
+          this.repositories = response.data
+        }).then(() => {
+          return user.listNotifications()
+        }).then((response) => {
+          this.notifications = response.data
+        })
       }
     }
   }
@@ -96,6 +112,10 @@
         font-size: 1.1rem;
         margin:    0;
       }
+    }
+
+    p {
+      margin: 0.5rem 0;
     }
   }
 </style>
