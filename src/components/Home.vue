@@ -55,8 +55,11 @@
     methods: {
       openFirstRepository() {
         let repository = this.filteredRepos[0]
-        window.open(repository.html_url)
-        this.search = ''
+
+        if (repository) {
+          window.open(repository.html_url)
+          this.search = ''
+        }
       },
 
       fromNow(time) {
