@@ -2,25 +2,18 @@
   <el-row>
     <el-col :offset="5" :span="14" class="repositories-list">
 
-      <input v-model="search" class="search-box" @keyup.enter="openFirstRepository" placeholder="Search for a repository" autofocus>
+      <input v-model="search"
+             class="search-box"
+             @keyup.enter="openFirstRepository"
+             placeholder="Search for a repository"
+             autofocus/>
 
       <div class="divider"></div>
 
-      <el-row :gutter="20">
-        <el-col v-for="repository in filteredRepos" :key="repository.id" :span="12">
-          <el-card class="item">
-            <div class="header" slot="header">
-              <i class="fa fa-github"></i>
-
-              <a :href="repository.html_url" target="_blank">
-                <h3>{{ repository.full_name }}</h3>
-              </a>
-            </div>
-
-            <p>Notifications: {{ notificationsFrom(repository).length }}</p>
-            <p>Last push {{ fromNow(repository.pushed_at) }}</p>
-          </el-card>
-        </el-col>
+      <el-row>
+        <repository v-for="repository in filteredRepos"
+                    :repository="repository"
+                    :notifications="notificationsFrom(repository)"/>
       </el-row>
 
     </el-col>
@@ -28,14 +21,17 @@
 </template>
 
 <script>
-  import Github from 'github-api'
-  import Moment from 'moment'
+  import Github     from 'github-api'
+  import Repository from '@/components/Repository'
 
   export default {
     name: 'home',
 
+    components: { Repository },
+
     data () {
       return {
+        user:          {},
         repositories:  [],
         notifications: [],
         search:        ''
@@ -62,10 +58,6 @@
         }
       },
 
-      fromNow(time) {
-        return Moment(time).fromNow()
-      },
-
       notificationsFrom(repository) {
         return this.notifications.filter((n) => {
           return n.repository.id === repository.id
@@ -82,7 +74,6 @@
 
         user.listRepos().then((response) => {
           this.repositories = response.data
-        }).then(() => {
           return user.listNotifications()
         }).then((response) => {
           this.notifications = response.data
@@ -110,32 +101,6 @@
     &:focus {
       outline: none;
       border: 1px solid #20a0ff;
-    }
-  }
-
-  .repositories-list .item {
-    margin: 1rem 0;
-
-    .header {
-      width:         100%;
-      white-space:   nowrap;
-      overflow:      hidden;
-      text-overflow: ellipsis;
-
-      i {
-        font-size: 1.5rem;
-        margin-right: 1rem;
-          float: left;
-      }
-
-      h3 {
-        font-size: 1.1rem;
-        margin:    0;
-      }
-    }
-
-    p {
-      margin: 0.5rem 0;
     }
   }
 </style>
