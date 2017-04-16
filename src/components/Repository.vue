@@ -1,22 +1,20 @@
 <template>
-  <el-col :key="repository.id" :span="12">
-    <el-card class="repository">
-      <div class="header" slot="header">
+  <el-card class="repository">
+    <div class="header" slot="header">
 
-        <a :href="repository.notifications_url" target="_blank">
-          <el-badge :value="notifications.length" :max="99">
-            <i class="fa fa-github"/>
-          </el-badge>
-        </a>
+      <a :href="repository.notifications_url" target="_blank">
+        <el-badge :value="notifications.length" :max="99">
+          <i class="fa fa-github"/>
+        </el-badge>
+      </a>
 
-        <a :href="repository.html_url" target="_blank">
-          <h3>{{ repository.full_name }}</h3>
-        </a>
-      </div>
+      <a :href="repository.html_url" target="_blank">
+        <h3>{{ repository.full_name }}</h3>
+      </a>
+    </div>
 
-      <p>Last push {{ lastPush }}</p>
-    </el-card>
-  </el-col>
+    <p>Last push {{ lastPush }}</p>
+  </el-card>
 </template>
 
 <script>

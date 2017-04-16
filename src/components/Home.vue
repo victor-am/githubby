@@ -11,9 +11,10 @@
       <div class="divider"></div>
 
       <el-row>
-        <repository v-for="repository in filteredRepos"
-                    :repository="repository"
-                    :notifications="notificationsFrom(repository)"/>
+        <el-col v-for="repository in filteredRepos" :span="12" :key="repository.id">
+          <repository :repository="repository"
+                      :notifications="notificationsFrom(repository)"/>
+        </el-col>
       </el-row>
 
     </el-col>

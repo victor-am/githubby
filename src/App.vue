@@ -1,11 +1,15 @@
 <template>
   <div id="app">
-    <div class="avatar">
-      <img :src="user.avatar_url"/>
-      <div class="hover-dim">
-        <i class="fa fa-cog"/>
-      </div>
-    </div>
+    <el-menu theme="dark" mode="horizontal">
+      <el-menu-item index="1">
+        <div class="avatar">
+          <img :src="user.avatar_url"/>
+          <div class="hover-dim">
+            <i class="fa fa-cog"/>
+          </div>
+        </div>
+      </el-menu-item>
+    </el-menu>
 
     <h1>
       <i class="fa fa-github-alt"></i>
@@ -53,23 +57,31 @@
 
 <style lang="scss">
   #app {
+    position:    absolute;
+    top:         0;
+    left:        0;
+    width:       100%;
+    text-align:  center;
+    color:       #2c3e50;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing:  antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color:      #2c3e50;
-    margin-top: 2rem;
+  }
+
+  h1 {
+    margin-top: 3rem;
   }
 
   .avatar {
-    width:         50px;
-    height:        50px;
+    width:         40px;
+    height:        40px;
     overflow:      hidden;
-    border:        3px solid #c5c5c5;
+    border:        2px solid #c5c5c5;
     border-radius: 100rem;
     position:      absolute;
-    right:         10px;
+    left:          50%;
     top:           10px;
+    margin-left:   -20px;
     cursor:        pointer;
 
     img {
@@ -92,10 +104,14 @@
       }
 
       i {
-        color:      #ddd;
-        margin-top: 9px;
-        font-size:  2rem;
-        opacity:    0.9;
+        position:    absolute;
+        left:        50%;
+        top:         50%;
+        margin-top:  -10px;
+        margin-left: -10px;
+        color:       #ddd;
+        font-size:   1.4rem;
+        opacity:     0.9;
       }
     }
   }
