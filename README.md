@@ -2,6 +2,8 @@
 
 > A simple Github management screen
 
+![preview](http://www.victoryam.com.br/githubby.gif)
+
 ## Build Setup
 
 ``` bash
