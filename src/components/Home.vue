@@ -19,7 +19,7 @@
               </a>
             </div>
 
-            Last updated at {{ repository.updated_at }}
+            Last updated at {{ repositoryLastUpdate(repository) }}
           </el-card>
         </el-col>
       </el-row>
@@ -30,6 +30,7 @@
 
 <script>
   import Github from 'github-api'
+  import Moment from 'moment'
 
   export default {
     name: 'home',
@@ -42,8 +43,18 @@
     },
 
     computed: {
+      sortedRepos() {
+        return this.orderBy(this.repositories, 'updated_at', -1)
+      },
+
       filteredRepos() {
-        return this.filterBy(this.repositories, this.search)
+        return this.filterBy(this.sortedRepos, this.search)
+      }
+    },
+
+    methods: {
+      repositoryLastUpdate(repository) {
+        return Moment(repository.updated_at).fromNow()
       }
     },
 
