@@ -1,7 +1,20 @@
 <template>
   <div id="app">
+    <el-dialog title="Add your Github token" v-model="showDialog">
+      <el-form>
+        <el-form-item label="Token">
+          <el-input v-model="githubToken" auto-complete="off"/>
+        </el-form-item>
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showDialog = false">Close</el-button>
+        <el-button type="primary" @click="saveToken">Save</el-button>
+      </span>
+    </el-dialog>
+
     <el-menu theme="dark" mode="horizontal">
-      <el-menu-item index="1">
+      <el-menu-item index="1" @click="showDialog = true">
         <div class="avatar">
           <img :src="user.avatar_url"/>
           <div class="hover-dim">
@@ -16,40 +29,48 @@
       Githubby
     </h1>
 
-    <input v-model="githubToken"/> <button @click="saveToken">Save</button>
-
-    <router-view></router-view>
+    <router-view :githubToken="githubToken"></router-view>
   </div>
 </template>
 
 <script>
-  import Github     from 'github-api'
+  import Github from 'github-api'
 
   export default {
     name: 'app',
 
     data() {
       return {
-        user: {},
-        githubToken: localStorage.getItem('github_token')
+        user:        {},
+        githubToken: localStorage.getItem('github_token'),
+        showDialog:  false
+      }
+    },
+
+    watch: {
+      githubToken(newValue) {
+        this.githubToken = newValue
+        if (this.githubToken) { this.fetchUser() }
       }
     },
 
     methods: {
       saveToken() {
         localStorage.setItem('github_token', this.githubToken)
+        this.showDialog = false
+      },
+
+      fetchUser() {
+        let gh = new Github({ token: this.githubToken })
+        gh.getUser().getProfile().then((response) => { this.user = response.data })
       }
     },
 
     mounted() {
-      let token = localStorage.getItem('github_token')
-
-      if (token) {
-        let gh   = new Github({ token })
-
-        gh.getUser().getProfile().then((response) => {
-          this.user = response.data
-        })
+      if (this.githubToken) {
+        this.fetchUser()
+      } else {
+        this.showDialog = true
       }
     }
   }

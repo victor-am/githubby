@@ -39,6 +39,10 @@
       }
     },
 
+    props: {
+      githubToken: { type: String, required: true }
+    },
+
     computed: {
       sortedRepos() {
         return this.orderBy(this.repositories, 'pushed_at', -1)
@@ -46,6 +50,13 @@
 
       filteredRepos() {
         return this.filterBy(this.sortedRepos, this.search)
+      }
+    },
+
+    watch: {
+      githubToken(newValue) {
+        this.githubToken = newValue
+        if (this.githubToken) { this.fetchData() }
       }
     },
 
@@ -63,14 +74,10 @@
         return this.notifications.filter((n) => {
           return n.repository.id === repository.id
         })
-      }
-    },
+      },
 
-    mounted() {
-      let token = localStorage.getItem('github_token')
-
-      if (token) {
-        let gh   = new Github({ token })
+      fetchData() {
+        let gh   = new Github({ token: this.githubToken })
         let user = gh.getUser()
 
         user.listRepos().then((response) => {
@@ -80,6 +87,10 @@
           this.notifications = response.data
         })
       }
+    },
+
+    mounted() {
+      if (this.githubToken) { this.fetchData() }
     }
   }
 </script>
