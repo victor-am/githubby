@@ -1,11 +1,20 @@
 <template>
   <div id="app">
-    <el-dialog title="Add your Github token" v-model="showDialog">
+    <el-dialog title="Setup" v-model="showDialog">
+
+      <h3>1. Generate your token with access to <strong>User and Repositories</strong></h3>
+      <el-button @click="openGenerateTokenPage">
+        Generate Token
+      </el-button>
+
+      <h3>2. Copy and paste your token here</h3>
       <el-form>
-        <el-form-item label="Token">
-          <el-input v-model="githubToken" auto-complete="off"/>
+        <el-form-item>
+          <el-input v-model="githubToken" auto-complete="off" placeholder="Insert your Github token"/>
         </el-form-item>
       </el-form>
+
+      Your token will be kept only in your browser.
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="showDialog = false">Close</el-button>
@@ -63,6 +72,10 @@
       fetchUser() {
         let gh = new Github({ token: this.githubToken })
         gh.getUser().getProfile().then((response) => { this.user = response.data })
+      },
+
+      openGenerateTokenPage() {
+        window.open('https://github.com/settings/tokens/new')
       }
     },
 
