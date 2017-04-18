@@ -1,25 +1,8 @@
 <template>
   <div id="app">
-    <el-dialog title="Setup" v-model="showDialog">
-      <h3>1. Generate your token with access to <strong>User and Repositories</strong></h3>
-      <el-button @click="openGenerateTokenPage">
-        Generate Token
-      </el-button>
-
-      <h3>2. Copy and paste your token here</h3>
-      <el-form>
-        <el-form-item>
-          <el-input v-model="githubToken" auto-complete="off" placeholder="Insert your Github token"/>
-        </el-form-item>
-      </el-form>
-
-      Your token will be kept only in your browser.
-
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="showDialog = false">Close</el-button>
-        <el-button type="primary" @click="saveToken">Save</el-button>
-      </span>
-    </el-dialog>
+    <token-dialog :githubToken="githubToken"
+                  :showDialog="showDialog"
+                  @close="showDialog = false"/>
 
     <el-menu theme="dark" mode="horizontal">
       <el-menu-item index="1" @click="showDialog = true">
@@ -47,9 +30,12 @@
 
 <script>
   import Github from 'github-api'
+  import TokenDialog from '@/components/TokenDialog'
 
   export default {
     name: 'app',
+
+    components: { TokenDialog },
 
     data() {
       return {
@@ -67,18 +53,9 @@
     },
 
     methods: {
-      saveToken() {
-        localStorage.setItem('github_token', this.githubToken)
-        this.showDialog = false
-      },
-
       fetchUser() {
         let gh = new Github({ token: this.githubToken })
         gh.getUser().getProfile().then((response) => { this.user = response.data })
-      },
-
-      openGenerateTokenPage() {
-        window.open('https://github.com/settings/tokens/new')
       },
 
       openGithubProjectPage() {
