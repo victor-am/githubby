@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <el-dialog title="Setup" v-model="showDialog">
-
       <h3>1. Generate your token with access to <strong>User and Repositories</strong></h3>
       <el-button @click="openGenerateTokenPage">
         Generate Token
@@ -30,6 +29,10 @@
             <i class="fa fa-cog"/>
           </div>
         </div>
+      </el-menu-item>
+
+      <el-menu-item index="2" class="github-project-button" @click="openGithubProjectPage">
+        <i class="fa fa-github"/>
       </el-menu-item>
     </el-menu>
 
@@ -76,6 +79,10 @@
 
       openGenerateTokenPage() {
         window.open('https://github.com/settings/tokens/new')
+      },
+
+      openGithubProjectPage() {
+        window.open('https://github.com/victor-am/githubby')
       }
     },
 
@@ -100,6 +107,16 @@
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing:  antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  .github-project-button {
+    float: right !important;
+
+    i {
+      margin-top: 10px;
+      font-size:  2.5rem;
+      color:      #fff;
+    }
   }
 
   h1 {
